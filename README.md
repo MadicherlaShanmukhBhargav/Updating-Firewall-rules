@@ -41,7 +41,7 @@ Windows uses **Windows Defender Firewall** to control inbound/outbound traffic.
 
 - Open PowerShell (as Administrator) and run:
 
-##### 1. Check for ports that are currently in a listening state
+##### 🔍 Check for ports that are currently in a listening state
 ```Powershell
 netstat -ano | findstr Listening
 ```
@@ -135,7 +135,7 @@ sudo ufw delete deny 22
 Start-Service sshd
 ```
 
-![](sshd_notfound.png)
+![](images/sshd_notfound.png)
 - If Windows is saying **sshdnot recognized.**
 
 - That happens if the OpenSSH server isn’t installed or enabled on your system.
