@@ -47,7 +47,7 @@ Windows uses **Windows Defender Firewall** to control inbound/outbound traffic.
 Linux commonly uses **ufw** (Uncomplicated Firewall) or **firewalld**. Below is with `ufw`.
 
 ### ✅ Steps (using ufw):
-#### Check firewall status:**
+####  Check firewall status:**
    ```bash
  sudo ufw status
    ```
@@ -133,9 +133,11 @@ Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
 ![](images/installing_server.png)
 
 
-##### 3. Enable and start the service
+##### 3. Check and start the service
 
-Once installed, run:
+![](images/Checking_server_installation.png)
+
+Once installed, restart the system and run:
 
 ```Powershell
 Start-Service sshd
