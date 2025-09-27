@@ -38,7 +38,42 @@ Windows uses **Windows Defender Firewall** to control inbound/outbound traffic.
 # 
 
 ### ✅ Steps via Powershell:
-1. Open powershell in Admin
+
+- Open PowerShell (as Administrator) and run:
+
+##### 1. Check for ports that are currently in a listening state
+```Powershell
+netstat -ano | findstr Listening
+```
+![netstat](images/netstat.png)
+
+##### 🚫 Block Telnet (Port 23)
+
+Run the following command in PowerShell to block inbound Telnet traffic:
+
+```Powershell
+New-NetFirewallRule -DisplayName "Block Telnet" -Direction Inbound -Protocol TCP -LocalPort 23 -Action Block
+```
+![](images/block_telnet.png)
+
+##### ✅ Allow SSH (Port 22)
+
+Run the following command in PowerShell to **allow inbound SSH traffic**:
+
+```powershell
+New-NetFirewallRule -DisplayName "Allow SSH" -Direction Inbound -Protocol TCP -LocalPort 22 -Action Allow
+```
+![](images/allow_ssh.png)
+
+##### ✅ Verify the rules:
+
+```Powershell
+Get-NetFirewallRule | Findstr Telnet
+```
+```Powershell
+Get-NetFirewallRule | Findstr SSH
+```
+![](images/rules_status.png)
 
 ---
 
@@ -99,6 +134,8 @@ sudo ufw delete deny 22
 ```Powershell
 Start-Service sshd
 ```
+
+![](sshd_notfound.png)
 - If Windows is saying **sshdnot recognized.**
 
 - That happens if the OpenSSH server isn’t installed or enabled on your system.
