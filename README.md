@@ -47,38 +47,137 @@ Windows uses **Windows Defender Firewall** to control inbound/outbound traffic.
 Linux commonly uses **ufw** (Uncomplicated Firewall) or **firewalld**. Below is with `ufw`.
 
 ### ✅ Steps (using ufw):
-#### Check firewall status:
+#### Check firewall status:**
    ```bash
  sudo ufw status
    ```
-#### Enable UFW (if disabled)
+![](images/ufw_status.png)
+####  Enable UFW (if disabled)
 ```bash
 sudo ufw enable
 ```
+![](images/ufw_enable.png)
 
-#### Blocked Inbound Traffic on Port 23 (Telnet)
+####  Blocked Inbound Traffic on Port 23 (Telnet)
    ``` bash
    sudo ufw deny 23
    ```
 Running sudo ufw deny 23/tcp → Linux will block Telnet connections.
 
-####  Allowed Inbound Traffic on Port 22 (SSH)
+![](images/deny23_status.png)
+
+####   Allowed Inbound Traffic on Port 22 (SSH)
 ``` bash
 sudo ufw allow 22
 ```
 Running sudo ufw allow 22/tcp → Linux will allow SSH connections.``
 
+![](images/allow22.png)
+
 #### Listed Current Firewall Rules
    ```  bash
    sudo ufw status
    ```
+![](images/check_status.png)
 
 #### Removed Test Rule to Restore Original State
 ``` bash
 sudo ufw delete deny 22
 ```
 
+## 📌 3. Accessing Windows from Linux using SSH
+### ✅ Pre-requisites:
 
+- Windows must have OpenSSH Server installed and running.
+
+- Firewall must allow inbound SSH (22/tcp).
+
+### Steps:
+### From Windows, run:
+- Open PowerShell (as Administrator) and run:
+#### Run sshd (SSH Server)
+```Powershell
+Start-Service sshd
+```
+- If Windows is saying **sshdnot recognized.**
+
+- That happens if the OpenSSH server isn’t installed or enabled on your system.
+
+- Here’s how to fix it step by step:
+
+##### 1. Check if OpenSSH is installed
+```Powershell
+Get-WindowsCapability -Online | Where-Object Name -like 'OpenSSH*'
+```
+**Expected Oouput:**
+You’ll see two items:
+
+```
+OpenSSH.Client~~~~0.0.1.0
+
+OpenSSH.Server~~~~0.0.1.0
+```
+
+![](images/server_not_installed.png)
+
+
+**Check if Server is marked as Installed**
+
+#### 2. Install OpenSSH Server (if not installed)
+
+If OpenSSH.Server shows NotPresent, install it with:
+```Powershell
+Add-WindowsCapability -Online -Name OpenSSH.Server~~~~0.0.1.0
+```
+
+![](images/installing_server.png)
+
+
+##### 3. Enable and start the service
+
+Once installed, run:
+
+```Powershell
+Start-Service sshd
+```
+
+![](images/starting_sshd.png)
+
+
+##### 4. Verify the service
+
+Check the status:
+
+```Powershell
+Get-Service sshd
+```
+It should show Running.
+
+![](images/sshd_status.png)
+
+### From Linux, run:
+- Open Terminal 
+```bash
+ssh <username>@<windows-ip>
+```
+![](images/connectin_ssh.png)
+
+#### NOTE:
+SSH access requires the user password;
+
+#### Access Gained via SSH:
+![](images/access_ssh.png)
+
+
+
+### NOTE:
+- If SSH is open & allowed in firewall → You will connect successfully.
+
+- If SSH is blocked in firewall → You will get:
+```bash
+ssh: connect to host 192.168.120.134 port 22: Connection refused
+```
+![](images/refused_ssh.png)
 
 ---
 
